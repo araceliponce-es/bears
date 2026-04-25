@@ -287,24 +287,45 @@ def get_github_data(token, username):
 
 
 def generate_html(data, config):
-    # env = Environment(loader=FileSystemLoader("templates"))
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    env = Environment(
-        loader=FileSystemLoader(os.path.join(BASE_DIR, CONFIG["template_dir"]))
-    )
+    # 1. Detect environment
+    ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
 
-    template = env.get_template(CONFIG["template_name"])
+    if ACTION_PATH:
+        base_path = ACTION_PATH  # running inside GitHub Action
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))  # local dev
 
+    # 2. Resolve template directory
+    template_dir = config.get("template_dir") or "templates"
+    full_template_path = os.path.join(base_path, template_dir)
+
+    print("ful dir path:", full_template_path)
+
+    # 3. Create Jinja environment
+    env = Environment(loader=FileSystemLoader(full_template_path))
+
+    # 4. Load template
+    template_name = config.get("template_name", "index.html")
+    print("📄 Using template:", template_name)
+
+    template = env.get_template(template_name)
+
+    # 5. Render HTML
     html_output = template.render(
         user=data,
-        title=CONFIG["title"],
-        stylesheet=CONFIG["stylesheet"],
+        title=config.get("title"),
+        stylesheet=config.get("stylesheet"),
     )
 
-    with open(CONFIG["output_html"], "w", encoding="utf-8") as f:
+    # 6. Ensure output directory exists
+    output_path = config.get("output_html", "index.html")
+    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
+
+    # 7. Write file
+    with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_output)
 
-    print("HTML done")
+    print("html at:", output_path)
 
 
 def generate_json(data):
