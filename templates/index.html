@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or (user.name ~ " — Portfolio") }}</title>
+    <link rel="stylesheet" href="{{ stylesheet }}">
+</head>
+
+<body>
+    <header class="max-w-xl mx-auto">
+        <img src="{{ user.avatar }}" alt="{{ user.name }}">
+        <div>
+            <h1>{{ user.name }}</h1>
+            <p class="bio">{{ user.bio }}</p>
+            <p>👥 {{ user.followers }} seguidores · Siguiendo a {{ user.following }}</p>
+        </div>
+    </header>
+
+    <main>
+        <h2 class="px-4">Repositorios destacados</h2>
+        <ol class="">
+            {% for repo in user.repos %}
+            <li class="repo  {{ 'private' if repo.private else '' }}" data-color={{repo.color}}
+                style="--color: {{repo.color}} ">
+                <article>
+                    <h3 class="repo__title"><a href="{{ repo.url }}" target="_blank">{{ repo.name }}</a></h3>
+                    {% if repo.topics %}
+                    <div class="absolute right-0 ">
+                        <p class="repo__topics">{{ repo.topics | join(', ') }}</p>
+                    </div>
+                    {% endif %}
+                    <div class="repo__cover ">
+
+                        <img class="" src={{repo.image_url}}>
+
+                    </div>
+                    <div class="repo__details">
+                        <p>{{ repo.description }}</p>
+                        <ol class="repo__languages">
+                            {% for item in repo.languages %}
+                            <li>{{item}}</li>
+                            {% endfor %}
+                        </ol>
+
+                        <p>⭐ {{ repo.stars }} stars</p>
+                    </div>
+                    <div class="repo__updated">
+                        <p>Actualizado {{ repo.updated_at[:10] }}</p>
+                    </div>
+                </article>
+            </li>
+            {% else %}
+        </ol>
+        <p>No se encontraron repositorios con las etiquetas seleccionadas.</p>
+        {% endfor %}
+    </main>
+
+    <script>
+        const articles = document.querySelectorAll(".repo");
+        const defaultColor = getComputedStyle(document.body).backgroundColor;
+
+        articles.forEach(article => {
+            article.addEventListener("mouseenter", () => {
+                const color = article.dataset.color;
+                if (color) document.body.style.backgroundColor = color;
+            });
+
+            article.addEventListener("mouseleave", () => {
+                document.body.style.backgroundColor = defaultColor;
+            });
+        });
+    </script>
+
+</body>
+
+</html>

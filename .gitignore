@@ -4,6 +4,4 @@ dist/*
 
 
 *.md 
-index.html
-main.css
 *.json
