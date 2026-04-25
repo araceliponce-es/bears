@@ -107,6 +107,7 @@ runs:
         OUTPUT_HTML: ${{ inputs.output_html }}
         TEMPLATE_NAME: ${{ inputs.template }}
         TITLE: ${{ inputs.title }}
+        GITHUB_ACTION_PATH: ${{ github.action_path }}
 
 branding:
   icon: "award"
