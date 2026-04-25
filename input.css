@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+* {
+    /* outline:1px solid tomato; */
+    padding: 0;
+    margin: 0;
+}
+
+
+body {
+    font-family: system-ui, sans-serif;
+    background: #f8f9fa;
+    color: #333;
+    padding: 2rem;
+}
+
+
+body {
+    display: grid;
+    gap: 3rem;
+    max-width: 40rem;
+    margin-inline: auto;
+    transition: background-color 0.4s ease;
+}
+
+header {
+    --size-img: 6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+header img {
+    width: var(--size-img);
+    height: var(--size-img);
+    border-radius: 50%;
+}
+
+header h1 {
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+p.bio {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+
+/*  */
+
+h2 {
+    font-size: 1.5rem;
+    padding-bottom: 1em;
+    text-emphasis-style: emphasis;
+    letter-spacing: 0.02em;
+    word-spacing: 0.25em;
+}
+
+ol {
+    display: grid;
+    gap: 2rem;
+}
+
+
+
+.repo article {
+    --item-padding: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: .75rem;
+    border-radius: .75rem;
+    background-color: rgb(243, 243, 243);
+
+    padding: var(--item-padding);
+    position: relative;
+
+    transition: background-color 0.3s ease;
+
+
+}
+
+.private a {
+    pointer-events: none;
+}
+
+.private a:after {
+    content: '🔒';
+    font-size: .5em;
+}
+
+
+.repo__title {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.repo__title,
+.repo__updated {
+    /* ocupa el ancho de todas las columnas del grid */
+    grid-column: -1/1;
+}
+
+.repo__topics {
+    font-size: .8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    opacity: .9;
+    background-color: white;
+    width: fit-content;
+    border-radius: .3rem;
+    padding: .1rem .3rem;
+    margin-right: var(--item-padding);
+    margin-top: calc(var(--item-padding)*0.75);
+}
+
+.repo img {
+    display: block;
+    border-radius: .5rem;
+}
+
+.repo__details>* {
+    padding-bottom: .5em;
+}
+
+.repo__languages {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: .8em;
+    gap: .25rem;
+
+    &>* {
+        background-color: #333;
+        color: var(--color);
+        padding: .2em .4em;
+        border-radius: .3rem;
+    }
+}
+
+.repo__updated {
+    grid-row: 2;
+    text-align: end;
+    font-size: .8em;
+    opacity: .8;
+    grid-row: 3;
+}

@@ -1,0 +1,9 @@
+dist/*
+*.exe
+.env
+
+
+*.md 
+index.html
+main.css
+*.json

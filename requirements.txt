@@ -1,0 +1,3 @@
+PyGithub
+jinja2
+python-dotenv
