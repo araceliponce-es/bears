@@ -247,9 +247,13 @@ def get_github_data(token, username):
             # lang_list = list((repo.get_languages() or {}).keys())
             # something inside the dict includes "url" as a key.
             langs_raw = repo.get_languages() or {}
-            print(repo.name, "RAW LANGS:", langs_raw)
+            lang_list = []
 
-            lang_list = list(langs_raw.keys())
+            for key, value in langs_raw.items():
+                # language names are strings and values are ints (bytes)
+                if isinstance(key, str) and isinstance(value, int):
+                    # if key.lower() != "url": --
+                    lang_list.append(key)
 
             # default_image_url = repo.name + ".png"
 
