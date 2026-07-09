@@ -95,7 +95,8 @@ runs:
 
     #
     - name: Generate HTML
-      run: python ${{ github.action_path }}/index.py ${{ inputs.watch == 'true' &&
+      run:
+        python ${{ github.action_path }}/index.py ${{ inputs.watch == 'true' &&
         '--watch' || '' }}
       shell: bash
       env:
@@ -108,6 +109,7 @@ runs:
         TEMPLATE_NAME: ${{ inputs.template }}
         TITLE: ${{ inputs.title }}
         GITHUB_ACTION_PATH: ${{ github.action_path }}
+        STYLESHEET: ${{ inputs.stylesheet }}
 
 branding:
   icon: "award"
