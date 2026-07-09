@@ -1,0 +1,25 @@
+title: "{{ user.name }} — Portfolio"
+
+topics:
+  - project
+  - hackathon
+
+template_dir: templates
+template_name: index.html
+
+output_html: index.html
+
+assets_folder: images
+
+cache_file: data.json
+
+stylesheets:
+  - output.css
+
+recent_commits: false
+max_commits: 6
+
+tailwind:
+  source: input.css
+  output: output.css
+  minify: true
