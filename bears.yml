@@ -1,0 +1,27 @@
+title: "{{ user.name }} — Portfolio"
+
+topics:
+  - project
+  - hackathon
+
+template_dir: templates
+template_name: index.html
+
+output_html: dist/index.html
+
+assets_folder: images
+
+cache_file: data.json
+
+stylesheets:
+  - output.css
+  - custom.css
+
+# convierte input.css a output.css usando tailwindcss
+tailwind:
+  source: input.css
+  output: output.css
+  minify: true
+
+recent_commits: false
+max_commits: 6

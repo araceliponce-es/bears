@@ -4,8 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title or (user.name ~ " — Portfolio") }}</title>
-    <link rel="stylesheet" href="{{ stylesheet }}">
+    <title>{{ config.title or (user.name ~ " — Portfolio") }}</title>
+    <!-- <link rel="stylesheet" href="{{ stylesheet }}"> -->
+    {% for css in config.stylesheets %}
+    <link rel="stylesheet" href="{{ css }}">
+    {% endfor %}
 </head>
 
 <body>
@@ -15,6 +18,15 @@
             <h1>{{ user.name }}</h1>
             <p class="bio">{{ user.bio }}</p>
             <p>👥 {{ user.followers }} seguidores · Siguiendo a {{ user.following }}</p>
+
+            {% for commit in user.recent_commits %}
+            <li class="recent">
+                <article>
+                    <p> {{ commit }}</p>
+
+                </article>
+            </li>
+            {% endfor %}
         </div>
     </header>
 

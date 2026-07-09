@@ -7,7 +7,8 @@ import os
 import random
 from dotenv import load_dotenv
 import sys  # para usar argumentos... python index2.py --watch
-
+from helpers import load_yaml, merge
+from pathlib import Path
 
 load_dotenv()
 
@@ -22,22 +23,17 @@ def get_env(name, default=None, cast=str):
         return default
 
 
-DEFAULT_TAGS = "project,hackathon"
-raw_tags = get_env("TAGS", DEFAULT_TAGS)
+ACTION_PATH = Path(os.getenv("GITHUB_ACTION_PATH", Path(__file__).parent))
 
+CONFIG = merge(
+    load_yaml(ACTION_PATH / "default_config.yml"),
+    load_yaml(Path("bears.yml")),
+)
 
-CONFIG = {
-    "template_name": get_env("TEMPLATE_NAME", "index.html"),
-    "template_dir": get_env("TEMPLATE_DIR", "templates"),
-    "output_html": get_env("OUTPUT_HTML", "dist/index.html"),
-    "assets_folder": get_env("ASSETS_FOLDER", "images"),
-    "cache_file": get_env("CACHE_FILE", "data-es.json"),
-    "stylesheet": get_env("STYLESHEET", "main.css"),
-    "title": get_env("TITLE", ""),
-    "tags": set(t.strip().lower() for t in raw_tags.split(",") if t.strip()),
-    "recent_commits": get_env("RECENT_COMMITS", "false").lower() == "true",
-    "max_commits": get_env("MAX_COMMITS", 6, int),
-}
+print("FINAL CONFIG:")
+print(CONFIG)
+print("STYLESHEETS:")
+print(CONFIG.get("stylesheets"))
 
 
 REFRESH = "--watch" in sys.argv
@@ -237,7 +233,7 @@ def get_github_data(token, username):
         print(f"[{index}/{total_repos}] {repo.name} → topics are: {topics}")
 
         # Determinar si el repo es destacado
-        if matches_tags(topics, CONFIG["tags"]):
+        if matches_tags(topics, CONFIG["topics"]):
             matched += 1
 
             readme_text = get_readme(repo)
@@ -291,6 +287,8 @@ def get_github_data(token, username):
 
 
 def generate_html(data, config):
+    print("DEBUG STYLESHEETS:", config.get("stylesheets"))
+
     # 1. Detect environment
     ACTION_PATH = os.getenv("GITHUB_ACTION_PATH")
 
@@ -315,11 +313,7 @@ def generate_html(data, config):
     template = env.get_template(template_name)
 
     # 5. Render HTML
-    html_output = template.render(
-        user=data,
-        title=config.get("title"),
-        stylesheet=config.get("stylesheet"),
-    )
+    html_output = template.render(user=data, config=config)
 
     # 6. Ensure output directory exists
     output_path = config.get("output_html", "index.html")
